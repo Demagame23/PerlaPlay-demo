@@ -84,6 +84,32 @@ const NAV=[
  {id:'promo',label:'Promozioni',href:'promo.html',cls:'nav-promo'}
 ];
 function clock(){const d=new Date();const s=d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});return `${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})} · ${s.charAt(0).toUpperCase()+s.slice(1)}`;}
+const FOOT_COLS=[
+ {title:'Il supporto per te',html:`<ul class="foot-support">
+   <li>${PP.icon('chat','sm')}<div>Live chat<small>Lun–Dom 16–20</small></div></li>
+   <li>${PP.icon('phone','sm')}<div><a href="tel:800796698">N° verde 800 796 698</a><small>Lun–Sab 10–18</small></div></li>
+   <li>${PP.icon('whatsapp','sm')}<div><a href="https://wa.me/38631346645">WhatsApp +386 31 346 645</a><small>Lun–Dom 10–20</small></div></li>
+   <li>${PP.icon('info','sm')}<div><a href="mailto:assistenza@perlaplay.it">assistenza@perlaplay.it</a><small>Lun–Dom 10–20</small></div></li></ul>`},
+ {title:'Giochi',tag:'Trova il gioco, nel cuore del Perla.',links:[['Perla Live – live casinò dal Perla','livecasino.html#perla'],['Slot machine','casino.html'],['Giochi da tavolo','casino.html'],['Casinò live','livecasino.html'],['Scommesse sportive','sport.html'],['Scommesse live','live.html'],['Fortuna cinese: Punto banco live','livecasino.html#asian']]},
+ {title:'Perlaplay.it',tag:'Oltre 40 anni di storia, il gioco continua qui.',links:[['Chi è Perlaplay.it'],['Contatti'],['Gruppo HIT'],['Sostenibilità'],['Perlaplay News']]},
+ {title:'La legge è la nostra regola',tag:'Le regole sempre in chiaro.',links:[['Condizioni generali di contratto'],['Carta dei servizi ADM'],['Probabilità di vincita'],['Vincite nel mese'],['Privacy e sicurezza dei dati'],['Politica dei cookie']]},
+ {title:'Come entrare in gioco',tag:'Iniziare è semplice, bastano 6 minuti.',links:[['Aprire un conto gioco'],['Firma il contratto di gioco'],['Come mandare i documenti'],['Depositi'],['Prelievi'],['FAQ'],['Scarica l’app'],['Glossario'],['Regolamenti dei giochi']]},
+ {title:'Gioca bene, gioca sano',tag:'Il controllo è il vero gioco.',links:[['Limiti di deposito e autolimitazione'],['Autoesclusione e registro RUA'],['Test di autovalutazione del giocatore'],['Numero verde nazionale – dipendenze'],['Linee guida per il gioco responsabile']]}
+];
+/* footer: sezioni aperte su desktop, a scomparsa su mobile */
+PP.footerAccordion=function(){
+  const mq=matchMedia('(max-width:900px)');
+  const apply=()=>{$$('#foot-grid .fcol').forEach(d=>{d.open=!mq.matches;});};
+  apply();mq.addEventListener('change',apply);
+  $('#foot-grid').addEventListener('click',e=>{if(e.target.closest('summary')&&!mq.matches)e.preventDefault();});
+};
+/* testo descrittivo: su mobile mostra solo l'inizio */
+PP.seoCollapse=function(){
+  $$('.seo').forEach(el=>{if(el.dataset.ready)return;el.dataset.ready=1;el.classList.add('is-clamped');
+    const b=document.createElement('button');b.className='seo-more';b.type='button';b.textContent='Leggi tutto';
+    b.addEventListener('click',()=>{const c=el.classList.toggle('is-clamped');b.textContent=c?'Leggi tutto':'Mostra meno';});
+    el.after(b);});
+};
 PP.shell=function(page){
   const top=$('#shell-top'),bot=$('#shell-bottom');
   const sportsStrip=['home','sport','live'].includes(page);
@@ -116,20 +142,9 @@ PP.shell=function(page){
       <div class="warn"><img src="assets/img/brand/18plus.png" alt="18+">Il gioco è vietato ai minori e può causare dipendenza patologica.</div>
       <div class="foot-badges"><img src="assets/img/brand/adm-full.png" alt="ADM – Agenzia delle Accise, Dogane e Monopoli"><img src="assets/img/brand/timone.png" alt="Timone ADM"><img src="assets/img/brand/iso.png" alt="Certificazioni ISO"></div>
     </div>
-    <div class="foot-grid">
-      <div><h4>Il supporto per te</h4><ul class="foot-support">
-        <li>${PP.icon('chat','sm')}<div>Live chat<small>Lun–Dom 16–20</small></div></li>
-        <li>${PP.icon('phone','sm')}<div>N° verde 800 796 698<small>Lun–Sab 10–18</small></div></li>
-        <li>${PP.icon('whatsapp','sm')}<div>WhatsApp +386 31 346 645<small>Lun–Dom 10–20</small></div></li>
-        <li>${PP.icon('info','sm')}<div>assistenza@perlaplay.it<small>Lun–Dom 10–20</small></div></li></ul>
-        <div class="foot-app"><a href="#"><img src="assets/img/brand/ios.svg" alt="Scarica dall’App Store"></a><a href="#"><img src="assets/img/brand/android.svg" alt="Scarica per Android"></a></div></div>
-      <div><h4>Giochi</h4><ul><li><a href="livecasino.html#perla">Perla Live – live casinò dal Perla</a></li><li><a href="casino.html">Slot machine</a></li><li><a href="casino.html#table">Giochi da tavolo</a></li><li><a href="livecasino.html">Casinò live</a></li><li><a href="sport.html">Scommesse sportive</a></li><li><a href="live.html">Scommesse live</a></li><li><a href="livecasino.html#asian">Fortuna cinese: Punto banco live</a></li></ul><p class="tag">Trova il gioco, nel cuore del Perla.</p></div>
-      <div><h4>Perlaplay.it</h4><ul><li><a href="#">Chi è Perlaplay.it</a></li><li><a href="#">Contatti</a></li><li><a href="#">Gruppo HIT</a></li><li><a href="#">Sostenibilità</a></li><li><a href="#">Perlaplay News</a></li></ul><p class="tag">Oltre 40 anni di storia, il gioco continua qui.</p>
-        <h4 style="margin-top:16px">La legge è la nostra regola</h4><ul><li><a href="#">Condizioni generali di contratto</a></li><li><a href="#">Carta dei servizi ADM</a></li><li><a href="#">Probabilità di vincita</a></li><li><a href="#">Vincite nel mese</a></li><li><a href="#">Privacy e sicurezza dei dati</a></li><li><a href="#">Politica dei cookie</a></li></ul></div>
-      <div><h4>Come entrare in gioco</h4><ul><li><a href="#">Aprire un conto gioco</a></li><li><a href="#">Firma il contratto di gioco</a></li><li><a href="#">Come mandare i documenti</a></li><li><a href="#">Depositi</a></li><li><a href="#">Prelievi</a></li><li><a href="#">FAQ</a></li><li><a href="#">Scarica l’app</a></li><li><a href="#">Glossario</a></li><li><a href="#">Regolamenti dei giochi</a></li></ul><p class="tag">Iniziare è semplice, bastano 6 minuti.</p></div>
-      <div><h4>Gioca bene, gioca sano</h4><ul><li><a href="#">Limiti di deposito e autolimitazione</a></li><li><a href="#">Autoesclusione e registro RUA</a></li><li><a href="#">Test di autovalutazione del giocatore</a></li><li><a href="#">Numero verde nazionale – dipendenze</a></li><li><a href="#">Linee guida per il gioco responsabile</a></li></ul><p class="tag">Il controllo è il vero gioco.</p></div>
-    </div>
+    <div class="foot-grid" id="foot-grid">${FOOT_COLS.map(c=>`<details class="fcol"><summary>${c.title}${PP.icon('chevD','sm')}</summary><div class="fbody">${c.html||`<ul>${c.links.map(l=>`<li><a href="${l[1]||'#'}">${l[0]}</a></li>`).join('')}</ul>`}${c.tag?`<p class="tag">${c.tag}</p>`:''}</div></details>`).join('')}</div>
     <div class="foot-bottom">
+      <div class="foot-app"><a href="#"><img src="assets/img/brand/ios.svg" alt="Scarica dall’App Store"></a><a href="#"><img src="assets/img/brand/android.svg" alt="Scarica per Android"></a></div>
       <div class="foot-pay"><img class="visa" src="assets/img/payments/visa.png" alt="Visa"><img src="assets/img/payments/mastercard.svg" alt="Mastercard"><img src="assets/img/payments/maestro.svg" alt="Maestro"><img src="assets/img/payments/skrill.svg" alt="Skrill"><img src="assets/img/payments/sepa.svg" alt="Bonifico SEPA"></div>
       <p class="legal">PERLAPLAY – Concessione GAD 16003 – HIT D.D. NOVA GORICA S.P.A., Via Delpinova 7/a, 5000 Nova Gorica, Slovenia – P.IVA IT 01472260932. Il gioco è riservato ai maggiorenni. Gioca responsabilmente.</p>
     </div>
@@ -140,6 +155,7 @@ PP.shell=function(page){
   <div class="modal" id="modal-register"><div class="box"><button class="x" data-close>${PP.icon('close')}</button><h2>Registrati</h2><p class="sub">Welcome Bonus del 100% fino a 1.100€. Bastano 6 minuti.</p>
     <form data-demo><div class="field"><label>Codice fiscale</label><input type="text" placeholder="Compila automaticamente i tuoi dati" required></div><div class="field"><label>Email</label><input type="email" required></div><div class="field"><label>Password</label><input type="password" required></div><button class="btn btn-pink btn-block" type="submit">Crea il conto gioco</button></form>
     <div class="links"><span style="color:var(--muted)">Concessione ADM n. 16003</span><a href="#" data-open="modal-login">Hai già un conto? Accedi</a></div></div></div>`;
+  PP.footerAccordion();PP.seoCollapse();
   setInterval(()=>{const c=$('#pp-clock');if(c)c.textContent=clock();},30000);
   // interactions
   document.addEventListener('click',e=>{
